@@ -1,2 +1,27 @@
 ---
 # tasks file for adipriyantobpn.repo-arangodb
+- block:
+
+  - name: include yum repository variable file
+    include_vars: "repo-{{ repo_location }}.yml"
+
+  # - name: import ArangoDB {{ arangodb_version }} GPG key
+  #   rpm_key:
+  #     key: "{{ arangodb_gpgkey_url.replace('file://', '') }}"
+  #     state: present
+  #   ignore_errors: "{{ ansible_check_mode }}"
+
+  - name: configure ArangoDB {{ arangodb_version }} yum repository
+    yum_repository:
+      name: "{{ item.key.lower() }}"
+      description: "ArangoDB - {{ arangodb_version }} for CentOS $releasever - $basearch"
+      mirrorlist: "{{ item.value.mirrorlist | default(omit) }}"
+      failovermethod: priority
+      baseurl: "{{ item.value.baseurl | default(omit) }}"
+      gpgkey: "{{ arangodb_gpgkey_url }}"
+      gpgcheck: yes
+      enabled: "{{ item.value.enabled }}"
+      file: "{{ item.value.file }}"
+      state: present
+    with_dict: "{{ arangodb_repo }}"
+  become: True

@@ -1,0 +1,10 @@
+---
+# yum variables can be checked using this command:
+#   $ python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'
+
+arangodb_gpgkey_url:        "https://www.arangodb.com/repositories/arangodb{{ arangodb_version|replace(old='.', new='') }}/CentOS_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key"
+arangodb_repo:
+  "arangodb-{{ arangodb_version }}":
+    file: "arangodb-{{ arangodb_version }}"
+    enabled: "{{ arangodb_enabled }}"
+    baseurl: "https://www.arangodb.com/repositories/arangodb{{ arangodb_version|replace(old='.', new='') }}/CentOS_$releasever/"

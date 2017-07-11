@@ -1,2 +1,7 @@
 ---
 # defaults file for adipriyantobpn.repo-arangodb
+
+repo_location:              international   # available options: international, vagrant
+vagrant_repo_base_dir:      "file:///vagrantshare/repo/"
+arangodb_enabled:            yes
+arangodb_version:            3.1
